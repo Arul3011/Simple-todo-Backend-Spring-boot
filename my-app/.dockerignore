@@ -1,0 +1,22 @@
+# Maven-related
+target/
+!target/*.jar
+
+# IDEs and editors
+*.iml
+.idea/
+.vscode/
+
+# System files
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+
+# Node (if full-stack with frontend)
+node_modules/
+npm-debug.log
