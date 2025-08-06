@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hello world form spring bootspr</h1>
+    <div id="con"> </div>
+    <button id="btn">get data</button>
+    <script>
+        const divEl = document.getElementById("con");
+        const btnEl = document.getElementById("btn");
+
+        const handelfetch = async()=>{
+            const res = await fetch("/todo/get");
+            const redata = await res.json();
+            console.log(redata);
+           redata.map((val)=>{
+            console.log(val.task);
+            console.log(val.id);
+            console.log(val.status);
+
+      
+      const p = document.createElement('p');
+      p.textContent = val.task;
+      divEl.appendChild(p);
+           })
+
+    
+        }
+        btnEl.addEventListener("click",()=>{
+            handelfetch();
+        })
+    </script>
+</body>
+</html>

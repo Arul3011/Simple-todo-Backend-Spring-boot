@@ -5,7 +5,8 @@ public class Todo {
      public String task;
      public boolean status;
 
-   public Todo(int id, String task) {
+     public Todo() {}
+     public Todo(int id, String task) {
         this.id = id;
         this.task = task;
         this.status = false;
