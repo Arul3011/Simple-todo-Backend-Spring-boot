@@ -6,7 +6,9 @@ import com.example.my_app.models.id;
 import com.example.my_app.repositories.Taskrepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +56,14 @@ if (Taskrepositories.existsById(id)) {
             return false;
         }
 }
+
+public Page<TaskTable> getPage(int page,int size){
+    Pageable pageable = PageRequest.of(page,size);
+    return Taskrepositories.findAll(pageable);
 }
+
+
+}
+
 
 

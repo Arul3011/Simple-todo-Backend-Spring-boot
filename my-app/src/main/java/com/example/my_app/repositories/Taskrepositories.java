@@ -3,6 +3,7 @@ import com.example.my_app.models.TaskTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface Taskrepositories extends JpaRepository<TaskTable,Integer>{
+    
 } 
 
     

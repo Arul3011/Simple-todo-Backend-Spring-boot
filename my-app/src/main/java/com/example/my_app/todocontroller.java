@@ -1,11 +1,10 @@
 package com.example.my_app;
-
+import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
 import com.example.my_app.models.*;
 import com.example.my_app.dbmethods;
 
@@ -46,4 +45,10 @@ public List<ReturnTypeAll> getTodos() {
     boolean deleteTodo(@RequestBody id req) {
        return dbmethods.deleteTodo(req.id);
     }
+    @GetMapping("/page")
+    ResponseEntity<Page<TaskTable>> getpagedata(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue="10") int size){
+        Page<TaskTable> data = dbmethods.getPage(page, size);
+        return ResponseEntity.ok(data);
+    }
+    
 }
