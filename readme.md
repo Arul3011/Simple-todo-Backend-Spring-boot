@@ -69,3 +69,23 @@ mvn spring-boot:run
 4. Middleware verifies JWT and sets authentication.
 5. Secured endpoints are accessible only with valid JWT.
 
+# To add cros config 
+
+add new bean in the secruity Config and add as the cord rule
+```java
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOriginPattern("*");
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.setAllowCredentials(true);
+
+         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+}
+```
+```java
+  .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+```
