@@ -1,8 +1,6 @@
 package com.example.my_app;
 
-import com.example.my_app.models.TaskTable;
-import com.example.my_app.models.Todo;
-import com.example.my_app.models.id;
+
 import com.example.my_app.repositories.Taskrepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +10,12 @@ import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-@Service  // ✅ Make this a Spring-managed service
+import com.example.my_app.models.TaskTable;;
+@Service  
 public class dbmethods {
 
     @Autowired
-    private Taskrepositories Taskrepositories;  // ✅ Correct place for @Autowired
+    private Taskrepositories Taskrepositories; 
 
     public void addTaskTodo(String taskText ,int id) {
         TaskTable task = new TaskTable();         
@@ -26,8 +24,8 @@ public class dbmethods {
         task.setId(id);                 
         Taskrepositories.save(task);               
 
-        List<TaskTable> tasks = Taskrepositories.findAll();  // ✅ Fetch all tasks
-        tasks.forEach(t -> System.out.println(t.getTask())); // Print them
+        List<TaskTable> tasks = Taskrepositories.findAll(); 
+        tasks.forEach(t -> System.out.println(t.getTask()));
     }
     public List<TaskTable>  getall(){
         return Taskrepositories.findAll();    

@@ -2,6 +2,7 @@ package com.example.my_app;
 import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,11 @@ public class todocontroller {
     ArrayList<Todo> todos = new ArrayList<>();
 
     @PostMapping("/add")
-    String addtodo(@RequestBody reqt body) {
-        todos.add(new Todo(body.id,body.task));
-        dbmethods.addTaskTodo(body.task,body.id);
+public String addtodo(@RequestBody Map<String, Object> body) {
+    int id = (Integer) body.get("id");
+    String task = (String) body.get("task");
+        todos.add(new Todo(id,task));
+        dbmethods.addTaskTodo(task,id);
         return "task added";
     }
 
@@ -37,13 +40,13 @@ public List<ReturnTypeAll> getTodos() {
 
 
     @PatchMapping("/task")
-    String ChangeStatus(@RequestBody id req) {
-        boolean result = dbmethods.toggleStatus(req.id);
+    String ChangeStatus(@RequestBody Integer id) {
+        boolean result = dbmethods.toggleStatus(id);
     return result ? "Updated" : "Not found" ;
     }
     @DeleteMapping
-    boolean deleteTodo(@RequestBody id req) {
-       return dbmethods.deleteTodo(req.id);
+    boolean deleteTodo(@RequestBody Integer id) {
+       return dbmethods.deleteTodo(id);
     }
     @GetMapping("/page")
     ResponseEntity<Page<TaskTable>> getpagedata(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue="10") int size){

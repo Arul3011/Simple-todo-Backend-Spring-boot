@@ -16,7 +16,7 @@ import io.jsonwebtoken.JwtException;
 public class JwtUtil {
 
     private static final String SECRET = "faa34279f4183d6c6f4d17c9460eb4a3";
-    private static final long EXP = 1000 * 60; // 1 minute
+    private static final long EXP = 1000 * 60 * 60; // 1 minute
 
     // Proper type: java.security.Key
     private final Key secretKey = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
@@ -33,9 +33,9 @@ public class JwtUtil {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                .setSigningKey(secretKey) // must match signing key
+                .setSigningKey(secretKey) 
                 .build()
-                .parseClaimsJws(token); // parse & validate
+                .parseClaimsJws(token); 
             return true;
         } catch (JwtException e) {
             return false;
