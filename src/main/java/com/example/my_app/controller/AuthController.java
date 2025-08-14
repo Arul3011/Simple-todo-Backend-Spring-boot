@@ -29,7 +29,9 @@ public class AuthController {
     public ResponseEntity<String> regUser(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         String password = body.get("password");
-
+if(!body.containsKey("email") || !body.containsKey("password")){
+    return ResponseEntity.badRequest().body("email or password missing");
+    }
         if (userRepo.findByEmail(email).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
@@ -47,7 +49,9 @@ public class AuthController {
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         String password = body.get("password");
-
+if(!body.containsKey("email") || !body.containsKey("password")){
+    return ResponseEntity.badRequest().body("email or password missing");
+    }
         var userOpt = userRepo.findByEmail(email);
         if (userOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not registered");
