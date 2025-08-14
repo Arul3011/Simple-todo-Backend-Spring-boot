@@ -1,4 +1,5 @@
 package com.example.my_app;
+
 import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,44 +15,58 @@ import com.example.my_app.dbmethods;
 public class todocontroller {
 
     @Autowired
-    private dbmethods dbmethods; 
-  
+    private dbmethods dbmethods;
+
     ArrayList<Todo> todos = new ArrayList<>();
 
     @PostMapping("/add")
-public String addtodo(@RequestBody Map<String, Object> body) {
-    int id = (Integer) body.get("id");
-    String task = (String) body.get("task");
-        todos.add(new Todo(id,task));
-        dbmethods.addTaskTodo(task,id);
-        return "task added";
+    public ResponseEntity<?> addtodo(@RequestBody Map<String, Object> body) {
+             if(!body.containsKey("id") || !body.containsKey("task")){
+         return ResponseEntity.badRequest().body("id or task missing");
+            }
+        int id = (Integer) body.get("id");
+        String task = (String) body.get("task");
+        dbmethods.addTaskTodo(task, id);
+        return ResponseEntity.ok().body("task added");
     }
 
     @GetMapping("/get")
-public List<ReturnTypeAll> getTodos() {
-    List<TaskTable> taskList = dbmethods.getall(); // assuming this returns List<TaskTable>
+    public List<ReturnTypeAll> getTodos() {
+        List<TaskTable> taskList = dbmethods.getall(); // assuming this returns List<TaskTable>
 
-    List<ReturnTypeAll> result = new ArrayList<>();
-    for (TaskTable task : taskList) {
-        result.add(new ReturnTypeAll(task.getId(), task.getTask(), task.getStatus()));
+        List<ReturnTypeAll> result = new ArrayList<>();
+        for (TaskTable task : taskList) {
+            result.add(new ReturnTypeAll(task.getId(), task.getTask(), task.getStatus()));
+        }
+        return result;
     }
-    return result;
-}
-
 
     @PatchMapping("/task")
-    String ChangeStatus(@RequestBody Integer id) {
+    ResponseEntity<?> ChangeStatus(@RequestBody Integer id) {
+             if(id == null ){
+    return ResponseEntity.badRequest().body("id missing");
+    }
         boolean result = dbmethods.toggleStatus(id);
-    return result ? "Updated" : "Not found" ;
+      return result 
+    ? ResponseEntity.ok().body("Updated") 
+    : ResponseEntity.badRequest().body("Not found");
+
     }
+
     @DeleteMapping
-    boolean deleteTodo(@RequestBody Integer id) {
-       return dbmethods.deleteTodo(id);
+    ResponseEntity<?> deleteTodo(@RequestBody Integer id) {
+        if(id == null ){
+    return ResponseEntity.badRequest().body("id missing");
     }
+    boolean res = dbmethods.deleteTodo(id);
+        return ResponseEntity.ok().body(res);
+    }
+
     @GetMapping("/page")
-    ResponseEntity<Page<TaskTable>> getpagedata(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue="10") int size){
+    ResponseEntity<Page<TaskTable>> getpagedata(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Page<TaskTable> data = dbmethods.getPage(page, size);
         return ResponseEntity.ok(data);
     }
-    
+
 }
